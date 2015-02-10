@@ -13,6 +13,8 @@
 use OX\plugins\geoTargeting\oxIpGeoBase\lib\Factory;
 use OX\plugins\geoTargeting\oxIpGeoBase\lib\Utils;
 
+defined('MAX_PATH') or die('Access denied');
+
 /**
  * Smarty blocks form handler
  *
