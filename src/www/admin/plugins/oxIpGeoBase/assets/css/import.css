@@ -1,0 +1,60 @@
+.geo table.scheduling .progress {
+    background: url('/www/admin/assets/images/ajax-loader-transparent.gif') no-repeat center right;
+    padding-right: 18px;
+    line-height: 16px;
+    display: inline-block;
+}
+
+.geo table.scheduling .button {
+    border: none;
+    background: none;
+    width: 16px;
+    height: 16px;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.geo table.scheduling .button-cancel {
+    background: #fff url('/www/admin/assets/images/icon-deactivate.gif') no-repeat center;
+}
+
+.geo table {
+    width: 100%;
+}
+
+.geo table.scheduling {
+    border: none;
+}
+
+.geo table.scheduling thead tr:first-child th {
+    background: #ffffff;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    border-bottom-width: 2px;
+    text-align: left;
+}
+
+.geo table.scheduling thead th {
+    background: #eeeeee;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    text-align: center;
+}
+
+.geo table.scheduling tbody tr.complete {
+    background: #0fa64b;
+    color: #ffffff;
+}
+
+.geo table.scheduling tbody tr.fail {
+    background: #fccfcf;
+}
+
+.geo table.scheduling tbody tr.complete td,
+.geo table.scheduling tbody tr.fail td{
+    border-bottom-color: #ffffff;
+}
+
+.geo table.scheduling tbody td {
+    text-align: center;
+}

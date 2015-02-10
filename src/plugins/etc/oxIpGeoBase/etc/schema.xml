@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<?xml-stylesheet type="text/xsl" href="xsl/mdb2_schema.xsl"?>
+<database>
+    <name>ipgeobase</name>
+    <create>true</create>
+    <overwrite>false</overwrite>
+    <version>001</version>
+    <status>final</status>
+
+    <table>
+        <name>ipgeobase</name>
+
+        <declaration>
+            <field>
+                <name>ip_lbound</name>
+                <type>openads_int</type>
+                <unsigned>true</unsigned>
+                <length>11</length>
+                <notnull>true</notnull>
+                <default></default>
+            </field>
+
+            <field>
+                <name>ip_rbound</name>
+                <type>openads_int</type>
+                <unsigned>true</unsigned>
+                <length>11</length>
+                <notnull>true</notnull>
+                <default></default>
+            </field>
+
+            <field>
+                <name>ip4_lbound</name>
+                <type>openads_varchar</type>
+                <length>15</length>
+                <notnull>true</notnull>
+                <default></default>
+            </field>
+
+            <field>
+                <name>ip4_rbound</name>
+                <type>openads_varchar</type>
+                <length>15</length>
+                <notnull>true</notnull>
+                <default></default>
+            </field>
+
+            <field>
+                <name>country_code</name>
+                <type>openads_varchar</type>
+                <length>2</length>
+                <notnull>true</notnull>
+                <default></default>
+            </field>
+
+            <field>
+                <name>city_id</name>
+                <type>openads_int</type>
+                <unsigned>true</unsigned>
+                <length>11</length>
+                <notnull>false</notnull>
+                <default></default>
+            </field>
+
+            <index>
+                <name>pk_ipgeobase</name>
+                <primary>true</primary>
+                <field>
+                    <name>ip_lbound</name>
+                    <sorting>ascending</sorting>
+                </field>
+                <field>
+                    <name>ip_rbound</name>
+                    <sorting>ascending</sorting>
+                </field>
+            </index>
+        </declaration>
+        <!--
+         <initialization>
+            <insert>
+                <field>
+                    <name></name>
+                    <value></value>
+                </field>
+            </insert>
+         </initialization>
+         -->
+    </table>
+
+    <table>
+        <name>ipgeobase_city</name>
+
+        <declaration>
+            <field>
+                <name>city_id</name>
+                <type>openads_int</type>
+                <unsigned>true</unsigned>
+                <length>11</length>
+                <notnull>true</notnull>
+                <default></default>
+            </field>
+
+            <field>
+                <name>city_name</name>
+                <type>openads_varchar</type>
+                <length>32</length>
+                <notnull>true</notnull>
+                <default></default>
+            </field>
+
+            <field>
+                <name>region_name</name>
+                <type>openads_varchar</type>
+                <length>32</length>
+                <notnull>true</notnull>
+                <default></default>
+            </field>
+
+            <field>
+                <name>latitude</name>
+                <type>openads_float</type>
+                <length>9,6</length>
+                <notnull>false</notnull>
+                <default></default>
+            </field>
+
+            <field>
+                <name>longitude</name>
+                <type>openads_float</type>
+                <length>9,6</length>
+                <notnull>false</notnull>
+                <default></default>
+            </field>
+
+            <index>
+                <name>pk_ipgeobase_city</name>
+                <primary>true</primary>
+                <field>
+                    <name>city_id</name>
+                    <sorting>ascending</sorting>
+                </field>
+            </index>
+        </declaration>
+    </table>
+
+    <table>
+        <name>ipgeobase_schedule</name>
+
+        <declaration>
+            <field>
+                <name>job_id</name>
+                <type>openads_int</type>
+                <unsigned>true</unsigned>
+                <autoincrement>true</autoincrement>
+                <length>11</length>
+                <notnull>true</notnull>
+                <default></default>
+            </field>
+
+            <field>
+                <name>job_code</name>
+                <type>openads_varchar</type>
+                <length>64</length>
+                <notnull>true</notnull>
+                <default></default>
+            </field>
+
+            <field>
+                <name>job_scheduled</name>
+                <type>openads_date</type>
+                <notnull>true</notnull>
+                <default></default>
+            </field>
+
+            <field>
+                <name>job_started</name>
+                <type>openads_date</type>
+                <notnull>false</notnull>
+                <default></default>
+            </field>
+
+            <field>
+                <name>job_completed</name>
+                <type>openads_date</type>
+                <notnull>false</notnull>
+                <default></default>
+            </field>
+
+            <field>
+                <name>job_status</name>
+                <type>openads_enum</type>
+                <length>'wait','run','fail','complete'</length>
+                <notnull>true</notnull>
+                <default>wait</default>
+            </field>
+
+            <field>
+                <name>job_author</name>
+                <type>openads_varchar</type>
+                <length>64</length>
+                <notnull>true</notnull>
+                <default>cron</default>
+            </field>
+
+            <field>
+                <name>author_email</name>
+                <type>openads_varchar</type>
+                <length>64</length>
+                <notnull>false</notnull>
+                <default></default>
+            </field>
+
+            <field>
+                <name>file_location</name>
+                <type>openads_varchar</type>
+                <length>255</length>
+                <notnull>false</notnull>
+                <default></default>
+            </field>
+
+            <index>
+                <name>pk_ipgeobase_schedule</name>
+                <primary>true</primary>
+                <field>
+                    <name>job_id</name>
+                    <sorting>ascending</sorting>
+                </field>
+            </index>
+
+            <index>
+                <name>unique_ipgeobase_schedule</name>
+                <unique>true</unique>
+                <field>
+                    <name>job_code</name>
+                    <sorting>ascending</sorting>
+                </field>
+            </index>
+        </declaration>
+    </table>
+</database>

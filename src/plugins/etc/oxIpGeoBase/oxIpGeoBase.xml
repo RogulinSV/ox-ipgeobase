@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<?xml-stylesheet type="text/xsl" href=""?>
+
+<plugin>
+    <name>oxIpGeoBase</name>
+    <displayName>IPGeoBase Plugin</displayName>
+    <creationDate>2015-02-09</creationDate>
+    <author>Garant</author>
+    <authorEmail>webmaster@garant.ru</authorEmail>
+    <authorUrl>http://www.garant.ru</authorUrl>
+    <license>GNU General Public License v3</license>
+    <description>This plugin uses IpGeoBase database files to perform viewer IP geo-location lookups.</description>
+    <version>1.0.0</version>
+    <oxversion>2.7.30-beta-rc11</oxversion>
+    <extends>geoTargeting</extends>
+
+    <install>
+        <syscheck>
+            <dbms>
+                <name>mysql</name>
+                <supported>1</supported>
+            </dbms>
+
+            <!-- optional plugin group dependency declaration -->
+            <!-- if this group depends on another group (not plugin!) -->
+            <!-- remember to set the group installation order in the plugin definition -->
+            <depends>
+                <!-- <plugin version="1.1.0" enabled="1">oxMaxMindGeoIP</plugin> -->
+                <plugin version="1.1.0" enabled="1">oxMemcached</plugin>
+                <plugin version="1.1.0" enabled="1">Geo</plugin>
+            </depends>
+        </syscheck>
+
+        <files>
+            <file path="{GROUPPATH}/">processSettings.php</file>
+            <file path="{GROUPPATH}/etc/">postInstall.php</file>
+            <file path="{MODULEPATH}geoTargeting/oxIpGeoBase/">oxIpGeoBase.autoload.php</file>
+            <file path="{MODULEPATH}geoTargeting/oxIpGeoBase/">oxIpGeoBase.class.php</file>
+            <file path="{MODULEPATH}geoTargeting/oxIpGeoBase/">oxIpGeoBase.delivery.php</file>
+            <file path="{MODULEPATH}geoTargeting/oxIpGeoBase/lib/">AbstractForm.php</file>
+            <file path="{MODULEPATH}geoTargeting/oxIpGeoBase/lib/">AbstractNotifier.php</file>
+            <file path="{MODULEPATH}geoTargeting/oxIpGeoBase/lib/">AbstractRepository.php</file>
+            <file path="{MODULEPATH}geoTargeting/oxIpGeoBase/lib/">Cache.php</file>
+            <file path="{MODULEPATH}geoTargeting/oxIpGeoBase/lib/">CacheAwareInterface.php</file>
+            <file path="{MODULEPATH}geoTargeting/oxIpGeoBase/lib/">Console.php</file>
+            <file path="{MODULEPATH}geoTargeting/oxIpGeoBase/lib/">Extractor.php</file>
+            <file path="{MODULEPATH}geoTargeting/oxIpGeoBase/lib/">Factory.php</file>
+            <file path="{MODULEPATH}geoTargeting/oxIpGeoBase/lib/">Filesystem.php</file>
+            <file path="{MODULEPATH}geoTargeting/oxIpGeoBase/lib/">Logger.php</file>
+            <file path="{MODULEPATH}geoTargeting/oxIpGeoBase/lib/">LoggerAwareInterface.php</file>
+            <file path="{MODULEPATH}geoTargeting/oxIpGeoBase/lib/">Maintenance.php</file>
+            <file path="{MODULEPATH}geoTargeting/oxIpGeoBase/lib/">MaintenanceNotifier.php</file>
+            <file path="{MODULEPATH}geoTargeting/oxIpGeoBase/lib/">Plugin.php</file>
+            <file path="{MODULEPATH}geoTargeting/oxIpGeoBase/lib/">Progress.php</file>
+            <file path="{MODULEPATH}geoTargeting/oxIpGeoBase/lib/">Scheduling.php</file>
+            <file path="{MODULEPATH}geoTargeting/oxIpGeoBase/lib/">SweepCommand.php</file>
+            <file path="{MODULEPATH}geoTargeting/oxIpGeoBase/lib/">Targeting.php</file>
+            <file path="{MODULEPATH}geoTargeting/oxIpGeoBase/lib/">Task.php</file>
+            <file path="{MODULEPATH}geoTargeting/oxIpGeoBase/lib/">TaskProgress.php</file>
+            <file path="{MODULEPATH}geoTargeting/oxIpGeoBase/lib/">TaskUtils.php</file>
+            <file path="{MODULEPATH}geoTargeting/oxIpGeoBase/lib/">Translation.php</file>
+            <file path="{MODULEPATH}geoTargeting/oxIpGeoBase/lib/">TranslationAwareInterface.php</file>
+            <file path="{MODULEPATH}geoTargeting/oxIpGeoBase/lib/">Utils.php</file>
+            <file path="{MODULEPATH}geoTargeting/oxIpGeoBase/lang/">en.lang.php</file>
+            <file path="{MODULEPATH}geoTargeting/oxIpGeoBase/lang/">ru.lang.php</file>
+            <file path="{ADMINPATH}/assets/css/">import.css</file>
+            <file path="{ADMINPATH}/assets/js/">import.js</file>
+            <file path="{ADMINPATH}/form/">GeoCities.php</file>
+            <file path="{ADMINPATH}/form/">GeoImport.php</file>
+            <file path="{ADMINPATH}/maintenance/">maintenance.php</file>
+            <file path="{ADMINPATH}/navigation/">MenuBuilder.php</file>
+            <file path="{ADMINPATH}/navigation/">MenuChecker.php</file>
+            <file path="{ADMINPATH}/templates/">geo-cities.tpl</file>
+            <file path="{ADMINPATH}/templates/">geo-import.tpl</file>
+            <file path="{ADMINPATH}/templates/">geo-import-blocks.tpl</file>
+            <file path="{ADMINPATH}/templates/form/">elements.tpl</file>
+            <file path="{ADMINPATH}/">common.php</file>
+            <file path="{ADMINPATH}/">geo-cities.php</file>
+            <file path="{ADMINPATH}/">geo-import.php</file>
+            <file path="{ADMINPATH}/">geo-import-ajax.php</file>
+            <file path="{ADMINPATH}/">index.html</file>
+            <file path="{ADMINPATH}/">index.php</file>
+        </files>
+
+        <!-- optional configuration settings and preferences -->
+        <configuration>
+            <!-- only administrator has permissions to change settings in config file -->
+            <!-- settings are written to a group section -->
+            <setting key="url" type="text" label="Url to the Archive file with the IpGeoBase Geo Data" required="1" size="128" visible="1">http://ipgeobase.ru/files/db/Main/geo_files.zip</setting>
+            <setting key="dataIp" type="text" label="Name of the file in the archive with the data by IP-addresses" required="1" size="64" visible="1">/cidr_optim.txt</setting>
+            <setting key="dataCities" type="text" label="Name of the file in the archive with the data by city" required="1" size="64" visible="1">/cities.txt</setting>
+            <setting key="dbIpTable" type="text" label="" required="1" size="64" visible="0">ipgeobase</setting>
+            <setting key="dbCitiesTable" type="text" label="" required="1" size="64" visible="0">ipgeobase_city</setting>
+            <setting key="dbVersion" type="text" label="" required="1" size="64" visible="0">0</setting>
+            <setting key="secret" type="text" label="" required="1" size="32" visible="0"></setting>
+
+            <setting key="cacheCommon" type="checkbox" label="Enable / Disable common caching" required="0" size="0" visible="1">true</setting>
+            <setting key="cacheExtended" type="checkbox" label="Enable / Disable extended caching" required="0" size="0" visible="1">false</setting>
+
+            <setting key="staleLimit" type="text" label="Stale Limit in Days" required="1" size="3" visible="1">5</setting>
+            <setting key="importBufferLimit" type="text" label="Buffer Limit" required="1" size="5" visible="1">100</setting>
+            <setting key="httpTimeout" type="text" label="HTTP Request Timeout" required="1" size="3" visible="1">10</setting>
+            <setting key="httpRedirects" type="text" label="HTTP max. Redirects" required="1" size="3" visible="1">3</setting>
+            <setting key="httpUseragent" type="text" label="HTTP User Agent" required="0" size="128" visible="1">Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)</setting>
+            <setting key="httpReferer" type="text" label="HTTP Referrer" required="0" size="128" visible="1"></setting>
+            <setting key="httpProxy" type="text" label="HTTP Proxy" required="0" size="128" visible="1"></setting>
+            <setting key="httpAuthName" type="text" label="HTTP Auth name" required="0" size="64" visible="1"></setting>
+            <setting key="httpAuthPass" type="text" label="HTTP Auth password" required="0" size="64" visible="1"></setting>
+
+            <!-- preferences have role-based permissions-->
+            <!-- preferences are prefixed in the preference table with the group name e.g. oxMaxMindGeoIP_preference_Admin -->
+            <!-- type, label, size and visible govern the display of the preference for editing -->
+            <!-- required=1 for mandatory preferences ; required=0 for optional preferences -->
+            <!--preference name="preference_Admin"      permission="ADMIN"      type="text" label="Admin Colour"     required="1" size="7" visible="1">preference_Admin default value</preference>
+            <preference name="preference_Manager"    permission="MANAGER"    type="text" label="Manager Colour"   required="0" size="7" visible="1">preference_Manager default value</preference>
+            <preference name="preference_Advertiser" permission="ADVERTISER" type="text" label="Advertiser Colour" required="0" size="7" visible="1">preference_Advertiser default value</preference>
+            <preference name="preference_Trafficker" permission="TRAFFICKER" type="text" label="Trafficker Colour" required="0" size="7" visible="1">preference_Trafficker default value</preference-->
+        </configuration>
+
+        <navigation>
+            <checkers>
+                <checker class="Plugins_GeoTargeting_Navigation_MenuChecker" include="MenuChecker.php" />
+            </checkers>
+
+            <admin>
+                <menu addto="configuration" index="ipgeobase-index" link="plugins/oxIpGeoBase/index.php" checker="Plugins_GeoTargeting_Navigation_MenuChecker">Geo Settings</menu>
+                <menu addto="ipgeobase-index" index="ipgeobase-import" link="plugins/oxIpGeoBase/geo-import.php" checker="Plugins_GeoTargeting_Navigation_MenuChecker">Import Data</menu>
+                <menu addto="ipgeobase-index" index="ipgeobase-cities" link="plugins/oxIpGeoBase/geo-cities.php" checker="Plugins_GeoTargeting_Navigation_MenuChecker">Cities List</menu>
+            </admin>
+
+            <manager>
+                <menu addto="configuration" index="ipgeobase-index" link="plugins/oxIpGeoBase/index.php" checker="Plugins_GeoTargeting_Navigation_MenuChecker">Geo Settings</menu>
+                <menu addto="ipgeobase-index" index="ipgeobase-cities" link="plugins/oxIpGeoBase/geo-cities.php" checker="Plugins_GeoTargeting_Navigation_MenuChecker">Cities List</menu>
+            </manager>
+
+            <advertiser>
+                <menu addto="configuration" index="ipgeobase-index" link="plugins/oxIpGeoBase/index.php" checker="Plugins_GeoTargeting_Navigation_MenuChecker">Geo Settings</menu>
+                <menu addto="ipgeobase-index" index="ipgeobase-cities" link="plugins/oxIpGeoBase/geo-cities.php" checker="Plugins_GeoTargeting_Navigation_MenuChecker">Cities List</menu>
+            </advertiser>
+        </navigation>
+
+        <!-- details of individual components in this group -->
+        <components>
+            <!--component-->
+            <!--name>{COMPONENT}</name-->
+            <!-- optional language file -->
+            <!--translations>{MODULEPATH}geoTargeting/oxMaxMindGeoIP/_lang/</translations-->
+            <!-- optional hooks -->
+            <!--hook>{HOOK}</hook-->
+            <!--/component-->
+            <component>
+                <name>oxIpGeoBase</name>
+            </component>
+        </components>
+
+        <!-- optional database schema info -->
+        <schema>
+            <mdb2schema>schema</mdb2schema>
+            <dboschema>db_schema</dboschema>
+            <dbolinks>db_schema.links</dbolinks>
+            <dataobject>Ipgeobase.php</dataobject>
+            <dataobject>Ipgeobase_city.php</dataobject>
+            <dataobject>Ipgeobase_schedule.php</dataobject>
+        </schema>
+
+        <!-- optional custom event scripts -->
+        <!--prescript>preInstall.php</prescript-->
+        <postscript>postInstall.php</postscript>
+    </install>
+</plugin>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<?xml-stylesheet type="text/xsl" href=""?>
+
+<plugin>
+    <name>openXIpGeoBase</name>
+    <displayName>IPGeoBase Plugin</displayName>
+    <creationDate>2014-12-05</creationDate>
+    <author>Garant</author>
+    <authorEmail>webmaster@garant.ru</authorEmail>
+    <authorUrl>http://www.garant.ru</authorUrl>
+    <license>GNU General Public License v3</license>
+    <description>Plugin that provides IpGeoBase Geotargeting</description>
+    <version>1.0.0</version>
+    <type>package</type>
+
+    <install>
+        <contents>
+            <group name="oxIpGeoBase">1</group>
+        </contents>
+    </install>
+</plugin>
