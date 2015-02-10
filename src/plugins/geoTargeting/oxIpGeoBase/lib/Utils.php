@@ -1,9 +1,9 @@
 <?php
 /**
- * Utils.php
+ * Utils
  *
- * @package none
- * @subpackage none
+ * @package Revive AdServer
+ * @subpackage IpGeoBase Plugin
  * @since 23.12.2014 16:04
  * @author Rogulin
  * @encoding utf8
