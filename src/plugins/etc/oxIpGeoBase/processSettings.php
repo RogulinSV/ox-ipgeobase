@@ -37,7 +37,7 @@ class oxIpGeoBase_processSettings
 			}
 		}
 
-		foreach (array(/*'staleLimit',*/ 'importBufferLimit', 'httpTimeout', 'httpRedirects') as $option) {
+		foreach (array('staleLimit', 'importBufferLimit', 'httpTimeout', 'httpRedirects') as $option) {
 			if (empty($GLOBALS[self::PREFIX . $option]) or $GLOBALS[self::PREFIX . $option] < 0) {
 				$errors[] = $this->translate('settings_error_invalid_number', array('%LABEL%' => $this->getLabel($option)));
 			}
