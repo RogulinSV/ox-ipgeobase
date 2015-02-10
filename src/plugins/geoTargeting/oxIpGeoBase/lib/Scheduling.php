@@ -177,7 +177,7 @@ class Scheduling extends AbstractRepository
 		if ($entity->find() && $entity->fetch()) {
 			$output = $entity->toArray();
 		} else if ($this->logger) {
-			$this->logger->error('database error: unable to find task with ID: ' . $id);
+			$this->logger->error('unable to find task with ID: ' . $id);
 		}
 
 		return $output;
