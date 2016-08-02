@@ -13,7 +13,9 @@
 use OX\plugins\geoTargeting\oxIpGeoBase\lib\Plugin;
 
 require_once dirname(__FILE__) . '/oxIpGeoBase.autoload.php';
-setupIncludePath();
+if (function_exists('setupIncludePath')) {
+    setupIncludePath();
+}
 
 /**
  * Gets geo data
