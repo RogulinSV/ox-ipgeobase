@@ -10,7 +10,7 @@
     <authorUrl>http://www.garant.ru</authorUrl>
     <license>GNU General Public License v3</license>
     <description>Plugin that provides IpGeoBase Geotargeting</description>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
     <type>package</type>
 
     <install>

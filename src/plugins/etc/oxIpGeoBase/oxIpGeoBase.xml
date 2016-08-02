@@ -10,7 +10,7 @@
     <authorUrl>http://www.garant.ru</authorUrl>
     <license>GNU General Public License v3</license>
     <description>This plugin uses IpGeoBase database files to perform viewer IP geo-location lookups.</description>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
     <oxversion>2.7.30-beta-rc11</oxversion>
     <extends>geoTargeting</extends>
 
@@ -74,6 +74,7 @@
             <file path="{ADMINPATH}/templates/">geo-import.tpl</file>
             <file path="{ADMINPATH}/templates/">geo-import-blocks.tpl</file>
             <file path="{ADMINPATH}/templates/form/">elements.tpl</file>
+            <file path="{ADMINPATH}/">invocation.php</file>
             <file path="{ADMINPATH}/">common.php</file>
             <file path="{ADMINPATH}/">geo-cities.php</file>
             <file path="{ADMINPATH}/">geo-import.php</file>
