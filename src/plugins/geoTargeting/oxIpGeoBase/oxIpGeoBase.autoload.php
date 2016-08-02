@@ -66,3 +66,5 @@ spl_autoload_register(function($class) {
 		require_once $filename;
 	}
 });
+
+include_once MAX_PATH . '/www/admin/plugins/oxIpGeoBase/common.php';

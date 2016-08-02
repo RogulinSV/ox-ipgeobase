@@ -149,6 +149,47 @@ abstract class AbstractRepository implements CacheAwareInterface, LoggerAwareInt
 	} // function key
 
 	/**
+	 * @param int $seconds
+	 * @return int
+	 */
+	protected function expired($seconds)
+	{
+		return time() + $seconds;
+	} // function expired
+
+	/**
+	 * @return int
+	 */
+	protected function expiredHour()
+	{
+		return $this->expired(3600);
+	} // function expiredHour
+
+	/**
+	 * @return int
+	 */
+	protected function expiredDay()
+	{
+		return $this->expired(86400);
+	} // function expiredWeek
+
+	/**
+	 * @return int
+	 */
+	protected function expiredWeek()
+	{
+		return $this->expired(604800);
+	} // function expiredWeek
+
+	/**
+	 * @return int
+	 */
+	protected function expiredMonth()
+	{
+		return $this->expired(18144000);
+	} // function expiredMonth
+
+	/**
 	 * Extracts class-specific constants using specific prefix
 	 *
 	 * @param string $prefix

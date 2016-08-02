@@ -17,7 +17,7 @@ class Targeting extends AbstractRepository
 	/**
 	 * Version of repository
 	 */
-	const VERSION = 1;
+	const VERSION = 2;
 
 	/**
 	 * Channel for logger
@@ -57,10 +57,7 @@ class Targeting extends AbstractRepository
 			$ip += pow(2, 32);
 		}
 
-		$caching = (
-			(bool)$this->config[Plugin::CONFIG_NAMESPACE]['cacheCommon']
-			&& (bool)$this->config[Plugin::CONFIG_NAMESPACE]['cacheExtended']
-		);
+		$caching = (bool)$this->config[Plugin::CONFIG_NAMESPACE]['cacheCommon'];
 		$key = $this->key('ipgeobase/ip', $ip);
 		if ($caching && $this->cache && false !== ($output = $this->cache->get($key))) {
 			return $output;
@@ -70,7 +67,7 @@ class Targeting extends AbstractRepository
 			$this->config['table']['prefix'] . $this->config[Plugin::CONFIG_NAMESPACE]['dbIpTable']
 		);
 
-		$query = '
+		/*$query = '
 			SELECT
 				ip4_lbound,
 				ip4_rbound,
@@ -84,14 +81,27 @@ class Targeting extends AbstractRepository
 				ip_rbound - ip_lbound ASC
 			LIMIT
 				1
-		';
+		';*/
+		$query = '
+			SELECT
+				*
+			FROM
+				' . $table . '
+			WHERE
+				ip_rbound >= ' . $ip . '
+			ORDER BY
+				ip_rbound ASC
+			LIMIT 1';
 
 		$output = $this->db->getRow($query);
 		if (!!($error = self::error($output))) {
 			$this->logError($error);
 		}
-		if ($caching && $this->cache && $output) {
-			$this->cache->set($key, $output);
+		if ($output && $output['ip_lbound'] > $ip) {
+			$output = null;
+		}
+		if ($caching && $this->cache) {
+			$this->cache->set($key, $output, $this->expiredMonth());
 		}
 
 		return $output;
@@ -107,10 +117,7 @@ class Targeting extends AbstractRepository
 	{
 		$cityId = (int)$cityId;
 
-		$caching = (
-			(bool)$this->config[Plugin::CONFIG_NAMESPACE]['cacheCommon']
-			&& (bool)$this->config[Plugin::CONFIG_NAMESPACE]['cacheExtended']
-		);
+		$caching = (bool)$this->config[Plugin::CONFIG_NAMESPACE]['cacheCommon'];
 		$key = $this->key('ipgeobase/city', $cityId);
 		if ($caching && $this->cache && false !== ($output = $this->cache->get($key))) {
 			return $output;
@@ -139,8 +146,8 @@ class Targeting extends AbstractRepository
 		} else {
 			$this->logError($error);
 		}
-		if ($caching && $this->cache && $output) {
-			$this->cache->set($key, $output);
+		if ($caching && $this->cache) {
+			$this->cache->set($key, $output, $this->expiredMonth());
 		}
 
 		return $output;
@@ -156,7 +163,10 @@ class Targeting extends AbstractRepository
 	{
 		$output = array();
 
-		$caching = (bool)$this->config[Plugin::CONFIG_NAMESPACE]['cacheCommon'];
+		$caching = (
+			   (bool)$this->config[Plugin::CONFIG_NAMESPACE]['cacheCommon']
+			&& (bool)$this->config[Plugin::CONFIG_NAMESPACE]['cacheExtended']
+		);
 		if (!is_null($countries)) {
 			sort($countries, SORT_NATURAL);
 			$key = $this->key('ipgeobase/regions', md5(serialize($countries)));
@@ -208,7 +218,7 @@ class Targeting extends AbstractRepository
 			}
 
 			if ($caching && $this->cache && $output) {
-				$this->cache->set($key, $output);
+				$this->cache->set($key, $output, $this->expiredMonth());
 			}
 		} else {
 			$this->logError($error);
@@ -225,7 +235,7 @@ class Targeting extends AbstractRepository
 	public function getCitiesList()
 	{
 		$caching = (
-			(bool)$this->config[Plugin::CONFIG_NAMESPACE]['cacheCommon']
+			   (bool)$this->config[Plugin::CONFIG_NAMESPACE]['cacheCommon']
 			&& (bool)$this->config[Plugin::CONFIG_NAMESPACE]['cacheExtended']
 		);
 		$key = $this->key('ipgeobase/cities');
@@ -266,7 +276,7 @@ class Targeting extends AbstractRepository
 			}
 
 			if ($caching && $this->cache && $output) {
-				$this->cache->set($key, $output);
+				$this->cache->set($key, $output, $this->expiredMonth());
 			}
 		} else {
 			$this->logError($error);

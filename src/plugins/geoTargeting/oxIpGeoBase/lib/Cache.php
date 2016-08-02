@@ -24,11 +24,23 @@ class Cache
 	private $prefix;
 
 	/**
-	 * @param string $prefix
+	 * @var bool
 	 */
-	public function __construct($prefix)
+	private $memorize;
+
+	/**
+	 * @var array
+	 */
+	private static $registry = array();
+
+	/**
+	 * @param string $prefix
+	 * @param bool $memorize
+	 */
+	public function __construct($prefix, $memorize = true)
 	{
 		$this->prefix = (string)$prefix;
+		$this->memorize = (bool)$memorize;
 	} // function __construct
 
 	/**
@@ -39,10 +51,19 @@ class Cache
 	 */
 	public function get($key)
 	{
-		$prefix = $GLOBALS['OA_Delivery_Cache']['prefix'];
-		$GLOBALS['OA_Delivery_Cache']['prefix'] = $this->prefix;
-		$output = OA_Delivery_Cache_fetch($key);
-		$GLOBALS['OA_Delivery_Cache']['prefix'] = $prefix;
+		$key = self::hashKey($key);
+		if (!$this->memorize or !array_key_exists($key, self::$registry)) {
+			$prefix = $GLOBALS['OA_Delivery_Cache']['prefix'];
+			$GLOBALS['OA_Delivery_Cache']['prefix'] = $this->prefix;
+			$output = OA_Delivery_Cache_fetch($key, $isHash = true);
+			$GLOBALS['OA_Delivery_Cache']['prefix'] = $prefix;
+
+			if ($this->memorize && false !== $output) {
+				self::$registry[$key] = $output;
+			}
+		} else {
+			$output = self::$registry[$key];
+		}
 
 		return $output;
 	} // function get
@@ -57,10 +78,14 @@ class Cache
 	 */
 	public function set($key, $value, $expire = null)
 	{
+		$key = self::hashKey($key);
 		$prefix = $GLOBALS['OA_Delivery_Cache']['prefix'];
-		$GLOBALS['OA_Delivery_Cache']['prefix'] = PLUGIN_IPGEOBASE_CACHE_PREFIX;
-		$output = (false === OA_Delivery_Cache_fetch($key) && OA_Delivery_Cache_store($key, $value, false, $expire));
+		$GLOBALS['OA_Delivery_Cache']['prefix'] = $this->prefix;
+		$output = OA_Delivery_Cache_store($key, $value, $isHash = true, $expire);
 		$GLOBALS['OA_Delivery_Cache']['prefix'] = $prefix;
+		if ($this->memorize) {
+			unset(self::$registry[$key]);
+		}
 
 		return $output;
 	} // function set
@@ -75,4 +100,13 @@ class Cache
 	{
 		return (false !== $this->get($key));
 	} // function has
+
+	/**
+	 * @param string $key
+	 * @return string
+	 */
+	private static function hashKey($key)
+	{
+		return md5($key);
+	} // function hashKey
 }
